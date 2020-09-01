@@ -7,3 +7,6 @@ mongoose.connect('mongodb://localhost:27017/url-shortener', (err)=> {
         console.log(err);
     }
 });
+
+
+module.exports = mongoose;
