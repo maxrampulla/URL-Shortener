@@ -18,6 +18,6 @@ app.listen(port, ()=> {
 
 });
 
-app.use("/api", urlController);
+app.use("", urlController);
 
 

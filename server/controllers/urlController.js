@@ -4,8 +4,11 @@ const router = express.Router();
 
 const { Url } = require("../models/urls");
 
+// middleware
+const validateNewLink = require("../middleware/validate_new_link")
+
 // Accept link from frontend, check in DB if someone has used the shortened code they want
-router.post("/newLink", async (req, res) => {
+router.post("/newLink", validateNewLink, async (req, res) => {
   const urlIsNotAvailable = await Url.findOne(
     { shortenedLinkCode: req.body.shortenedLinkCode },
     function (err) {
@@ -45,5 +48,17 @@ router.post("/newLink", async (req, res) => {
 // no body along with this request
 
 // put, patch, delete
+router.get('/:shortenedLinkCode', async (req, res) => {
+  const urlObject = await Url.findOne({shortenedLinkCode: req.params.shortenedLinkCode});
+
+  if(urlObject) {
+    res.redirect(urlObject.directedLink);
+  } else {
+    //redict to page saying url doesn't exist 
+    res.send('This link does not exist');
+  }
+});
+
+
 
 module.exports = router;
